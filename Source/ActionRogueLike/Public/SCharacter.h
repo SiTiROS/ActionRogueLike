@@ -4,6 +4,9 @@
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 {
@@ -13,6 +16,12 @@ public:
 	ASCharacter();
 
 protected:
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* SpringArmComp;
+
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* CameraComp;
+
 	virtual void BeginPlay() override;
 
 public:
