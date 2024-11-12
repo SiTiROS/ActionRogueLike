@@ -18,6 +18,13 @@ void ASCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ASCharacter::MoveForward(float Value)
+{
+	// Задаём движение у компонента UPawnMovementComponent
+	// GetActorForwardVector() - получить вектор туда, куда смотрит персонаж
+	AddMovementInput(GetActorForwardVector(), Value);
+}
+
 void ASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -26,4 +33,8 @@ void ASCharacter::Tick(float DeltaTime)
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
+
+	PlayerInputComponent->BindAxis("Turn", this, &ASCharacter::AddControllerYawInput);
 }
