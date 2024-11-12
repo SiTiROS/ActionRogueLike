@@ -22,10 +22,13 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
 
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	TSubclassOf<AActor> ProjectileClass;
 
+	virtual void BeginPlay() override;
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void PrimaryAttack();
 
 public:
 	virtual void Tick(float DeltaTime) override;
