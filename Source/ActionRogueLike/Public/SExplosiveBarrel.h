@@ -30,9 +30,7 @@ protected:
 	void OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	                    FVector NormalImpulse, const FHitResult& Hit);
 
+	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
-
-public:
-	virtual void Tick(float DeltaTime) override;
 	virtual void Destroyed() override;
 };

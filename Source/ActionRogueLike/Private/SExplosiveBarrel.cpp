@@ -6,7 +6,7 @@
 
 ASExplosiveBarrel::ASExplosiveBarrel()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
 	RootComponent = MeshComp;
@@ -16,12 +16,22 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	RadialForceComp = CreateDefaultSubobject<URadialForceComponent>("RadialForce");
 	RadialForceComp->SetupAttachment(MeshComp);
 	RadialForceComp->Radius = 400.0f;
-	RadialForceComp->bImpulseVelChange = true;
+	RadialForceComp->bImpulseVelChange = true; // игнорировать массу
 	RadialForceComp->ImpulseStrength = 1000.0f;
+	RadialForceComp->SetAutoActivate(false);
+	RadialForceComp->AddCollisionChannelToAffect(ECC_WorldDynamic);
 
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
 	EffectComp->SetupAttachment(MeshComp);
-    EffectComp->bAutoActivate = false;
+	EffectComp->bAutoActivate = false;
+}
+
+void ASExplosiveBarrel::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	// Лучше тут вызывать привязку
+	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnComponentHit);
 }
 
 void ASExplosiveBarrel::BeginPlay()
@@ -29,7 +39,7 @@ void ASExplosiveBarrel::BeginPlay()
 	Super::BeginPlay();
 	EffectComp->Deactivate();
 
-	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnComponentHit);
+	// MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnComponentHit);
 }
 
 void ASExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -41,11 +51,6 @@ void ASExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComp, AActor* Oth
 		RadialForceComp->FireImpulse();
 		Destroy();
 	}
-}
-
-void ASExplosiveBarrel::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void ASExplosiveBarrel::Destroyed()
