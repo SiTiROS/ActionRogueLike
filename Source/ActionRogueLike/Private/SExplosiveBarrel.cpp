@@ -3,6 +3,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "DrawDebugHelpers.h"
 
 ASExplosiveBarrel::ASExplosiveBarrel()
 {
@@ -51,6 +52,13 @@ void ASExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComp, AActor* Oth
 		RadialForceComp->FireImpulse();
 		Destroy();
 	}
+
+	UE_LOG(LogTemp, Log, TEXT("OnComponentHit in Explosive Barrel"));
+	UE_LOG(LogTemp, Warning, TEXT("Other Actor: %s, at game time: %f"), *GetNameSafe(OtherComp), GetWorld()->TimeSeconds);
+
+	FString CombinedString = FString::Printf(TEXT("Hit at location: %s, at game time: %f"), *Hit.ImpactPoint.ToString(), GetWorld()->TimeSeconds);
+
+	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.0f, true);
 }
 
 void ASExplosiveBarrel::Destroyed()
