@@ -1,10 +1,11 @@
 #include "SCharacter.h"
-#include "SMagicProjectile.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
 #include "SInteractionComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "SBaseProjectile.h"
 
 ASCharacter::ASCharacter()
 {
@@ -24,6 +25,8 @@ ASCharacter::ASCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>(TEXT("InteractionComp"));
+
+	AttackAnimDelay = 0.2f;
 }
 
 void ASCharacter::BeginPlay()
@@ -78,6 +81,12 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	// Взаимодействие
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
+
+	// Атака ПКМ
+	PlayerInputComponent->BindAction("SecondaryAttack", IE_Pressed, this, &ASCharacter::SecondaryAttack);
+
+	// Телепорт
+	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ASCharacter::Dash);
 }
 
 void ASCharacter::MoveForward(float Value)
@@ -109,25 +118,86 @@ void ASCharacter::MoveRight(float Value)
 	AddMovementInput(RightVector, Value);
 }
 
-void ASCharacter::PrimaryAttack()
-{
-	PlayAnimMontage(AttackAnim);
-
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, 0.2f);
-	// GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
-}
-
-void ASCharacter::PrimaryAttack_TimeElapsed()
+void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)
 {
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
 
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	FVector TraceStart = CameraComp->GetComponentLocation();
+	FVector TraceEnd = TraceStart + GetControlRotation().Vector() * 5000.0f;
+
+	// Type collision 
+	FCollisionObjectQueryParams ObjQueryParams;
+	ObjQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+	ObjQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+	// Ignore Player
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	FHitResult Hit;
+	FRotator ProjRotation;
+
+	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, TraceStart, TraceEnd, ObjQueryParams, QueryParams);
+	if (bBlockingHit)
+	{
+		// ProjRotation = FRotationMatrix::MakeFromX(Hit.ImpactPoint - HandLocation).Rotator();
+		ProjRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, Hit.ImpactPoint);
+	}
+	else
+	{
+		// ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
+		ProjRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, TraceEnd);
+	}
+
+	// FColor LineColor = bBlockingHit ? FColor::Red : FColor::Green;
+	// DrawDebugLine(GetWorld(), TraceStart, TraceEnd, LineColor, false, 2.0f, 0, 1.0f);
+
+	FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
+	GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
+}
+
+void ASCharacter::PrimaryAttack()
+{
+	PlayAnimMontage(AttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, AttackAnimDelay);
+}
+
+void ASCharacter::PrimaryAttack_TimeElapsed()
+{
+	if (ProjectileClass)
+	{
+		SpawnProjectile(ProjectileClass);
+	}
+}
+
+void ASCharacter::SecondaryAttack()
+{
+	PlayAnimMontage(AttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_SecondaryAttack, this, &ASCharacter::SecondaryAttack_TimeElapsed, AttackAnimDelay);
+}
+
+void ASCharacter::SecondaryAttack_TimeElapsed()
+{
+	SpawnProjectile(BlackHoleProjectileClass);
+}
+
+void ASCharacter::Dash()
+{
+	PlayAnimMontage(AttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_SecondaryAttack, this, &ASCharacter::Dash_TimeElapsed, AttackAnimDelay);
+}
+
+void ASCharacter::Dash_TimeElapsed()
+{
+	SpawnProjectile(DashProjectileClass);
 }
 
 void ASCharacter::PrimaryInteract()

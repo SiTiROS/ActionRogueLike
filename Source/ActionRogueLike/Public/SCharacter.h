@@ -8,6 +8,7 @@ class USInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UAnimMontage;
+class ASBaseProjectile;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
@@ -18,29 +19,45 @@ public:
 	ASCharacter();
 
 protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Attack")
+	float AttackAnimDelay;
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UCameraComponent* CameraComp;
 
 	UPROPERTY(VisibleAnywhere)
 	USInteractionComponent* InteractionComp;
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
-	TSubclassOf<AActor> ProjectileClass;
+	TSubclassOf<ASBaseProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
+	TSubclassOf<ASBaseProjectile> BlackHoleProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
+	TSubclassOf<ASBaseProjectile> DashProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
 	UAnimMontage* AttackAnim;
 
 	FTimerHandle TimerHandle_PrimaryAttack;
+	FTimerHandle TimerHandle_SecondaryAttack;
+	FTimerHandle TimerHandle_Dash;
 
 	virtual void BeginPlay() override;
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn);
 	void PrimaryAttack();
-	void PrimaryInteract();
 	void PrimaryAttack_TimeElapsed();
+	void SecondaryAttack();
+	void SecondaryAttack_TimeElapsed();
+	void Dash();
+	void Dash_TimeElapsed();
+	void PrimaryInteract();
 
 public:
 	virtual void Tick(float DeltaTime) override;
