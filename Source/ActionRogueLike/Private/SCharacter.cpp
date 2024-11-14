@@ -39,8 +39,8 @@ void ASCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// -- Rotation Visualization -- //
-	const float DrawScale = 100.0f;
-	const float Thickness = 5.0f;
+	constexpr float DrawScale = 100.0f;
+	constexpr float Thickness = 5.0f;
 
 	FVector LineStart = GetActorLocation();
 
@@ -120,45 +120,49 @@ void ASCharacter::MoveRight(float Value)
 
 void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	FVector TraceStart = CameraComp->GetComponentLocation();
-	FVector TraceEnd = TraceStart + GetControlRotation().Vector() * 5000.0f;
-
-	// Type collision 
-	FCollisionObjectQueryParams ObjQueryParams;
-	ObjQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-	ObjQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
-	ObjQueryParams.AddObjectTypesToQuery(ECC_Pawn);
-
-	// Ignore Player
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this);
-
-	FHitResult Hit;
-	FRotator ProjRotation;
-
-	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, TraceStart, TraceEnd, ObjQueryParams, QueryParams);
-	if (bBlockingHit)
+	// check(ClassToSpawn);
+	if (ensure(ClassToSpawn))
 	{
-		// ProjRotation = FRotationMatrix::MakeFromX(Hit.ImpactPoint - HandLocation).Rotator();
-		ProjRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, Hit.ImpactPoint);
-	}
-	else
-	{
-		// ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
-		ProjRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, TraceEnd);
-	}
+		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	// FColor LineColor = bBlockingHit ? FColor::Red : FColor::Green;
-	// DrawDebugLine(GetWorld(), TraceStart, TraceEnd, LineColor, false, 2.0f, 0, 1.0f);
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
 
-	FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
-	GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
+		FVector TraceStart = CameraComp->GetComponentLocation();
+		FVector TraceEnd = TraceStart + GetControlRotation().Vector() * 5000.0f;
+
+		// Type collision 
+		FCollisionObjectQueryParams ObjQueryParams;
+		ObjQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+		ObjQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+		ObjQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+		// Ignore Player
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(this);
+
+		FHitResult Hit;
+		FRotator ProjRotation;
+
+		bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, TraceStart, TraceEnd, ObjQueryParams, QueryParams);
+		if (bBlockingHit)
+		{
+			// ProjRotation = FRotationMatrix::MakeFromX(Hit.ImpactPoint - HandLocation).Rotator();
+			ProjRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, Hit.ImpactPoint);
+		}
+		else
+		{
+			// ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
+			ProjRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, TraceEnd);
+		}
+
+		// FColor LineColor = bBlockingHit ? FColor::Red : FColor::Green;
+		// DrawDebugLine(GetWorld(), TraceStart, TraceEnd, LineColor, false, 2.0f, 0, 1.0f);
+
+		FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
+	}
 }
 
 void ASCharacter::PrimaryAttack()
