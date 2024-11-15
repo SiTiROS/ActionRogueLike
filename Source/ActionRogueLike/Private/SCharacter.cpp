@@ -136,6 +136,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)
 		ObjQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
 		ObjQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
 		ObjQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+		ObjQueryParams.AddObjectTypesToQuery(ECC_PhysicsBody);
 
 		// Ignore Player
 		FCollisionQueryParams QueryParams;
@@ -158,6 +159,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)
 
 		// FColor LineColor = bBlockingHit ? FColor::Red : FColor::Green;
 		// DrawDebugLine(GetWorld(), TraceStart, TraceEnd, LineColor, false, 2.0f, 0, 1.0f);
+		// DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 2.0f, 32, FColor::Red, false, 2.0f);
 
 		FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
 		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
