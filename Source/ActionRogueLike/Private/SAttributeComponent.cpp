@@ -9,7 +9,7 @@ bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
 	Health += Delta;
 
-	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
+	OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
 
 	return true;
 }
