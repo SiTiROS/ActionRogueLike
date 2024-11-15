@@ -3,30 +3,29 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
+#include "SAttributeComponent.h"
 #include "SInteractionComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "SBaseProjectile.h"
 
 ASCharacter::ASCharacter()
+	: AttackAnimDelay(0.2f)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->bUsePawnControlRotation = true; // Настройка, чтобы вращать пружинной палкой с камерой по оси Y
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 
-	// Настройка, чтобы вращать пружинной палкой с камерой по оси Y
-	SpringArmComp->bUsePawnControlRotation = true;
-	// Отвязываем вращение персонажа мышкой
-	bUseControllerRotationYaw = false;
-	// Ориентируем поворот персонажа в сторону движения 
-	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false; // Отвязываем вращение персонажа мышкой
+	GetCharacterMovement()->bOrientRotationToMovement = true; // Ориентируем поворот персонажа в сторону движения 
 
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>(TEXT("InteractionComp"));
 
-	AttackAnimDelay = 0.2f;
+	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
 }
 
 void ASCharacter::BeginPlay()

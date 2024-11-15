@@ -8,7 +8,7 @@ class UProjectileMovementComponent;
 class USphereComponent;
 class UParticleSystemComponent;
 
-UCLASS()
+UCLASS(ABSTRACT) // 'ABSTRACT' marks this class as incomplete, keeping this out of certain dropdowns windows like SpawnActor in Unreal Editor
 class ACTIONROGUELIKE_API ASBaseProjectile : public AActor
 {
 	GENERATED_BODY()
@@ -33,6 +33,8 @@ protected:
 	virtual void OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
 	                            const FHitResult& Hit);
 
+	// BlueprintNativeEvent = C++ base implementation, can be expanded in Blueprints
+	// BlueprintCallable to allow child classes to trigger explosions
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Explode();
 

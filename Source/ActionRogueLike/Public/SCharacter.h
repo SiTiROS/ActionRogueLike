@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+class USAttributeComponent;
 class USInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -19,17 +20,17 @@ public:
 	ASCharacter();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Attack")
-	float AttackAnimDelay;
-
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Setup|Component")
 	USpringArmComponent* SpringArmComp;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup|Component")
 	UCameraComponent* CameraComp;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Setup|Component")
 	USInteractionComponent* InteractionComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup|Component")
+	USAttributeComponent* AttributeComp;
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
 	TSubclassOf<ASBaseProjectile> ProjectileClass;
@@ -39,6 +40,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
 	TSubclassOf<ASBaseProjectile> DashProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|Attack")
+	float AttackAnimDelay;
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
 	UAnimMontage* AttackAnim;
