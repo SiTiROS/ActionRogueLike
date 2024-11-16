@@ -21,7 +21,8 @@ protected:
 
 	FTimerHandle TimerHandle_Activate;
 	FTimerHandle TimerHandle_Teleport;
-	
+
+	// переопределяем реализацию
 	virtual void Explode_Implementation() override;
 
 	virtual void TeleportInstigator();

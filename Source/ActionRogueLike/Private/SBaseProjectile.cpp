@@ -11,7 +11,6 @@ ASBaseProjectile::ASBaseProjectile()
 	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	RootComponent = SphereComp;
 	SphereComp->SetCollisionProfileName("Projectile");
-	SphereComp->SetSphereRadius(20.0f);
 	SphereComp->OnComponentHit.AddDynamic(this, &ASBaseProjectile::OnComponentHit);
 
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
@@ -39,9 +38,10 @@ void ASBaseProjectile::OnComponentHit(UPrimitiveComponent* HitComponent, AActor*
 	Explode();
 }
 
-
 void ASBaseProjectile::Explode_Implementation()
 {
+	ensureAlways(IsValid(this)); // чтобы 2 раза не дестроили, где-то в наследниках
+
 	UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 
 	EffectComp->DeactivateSystem();

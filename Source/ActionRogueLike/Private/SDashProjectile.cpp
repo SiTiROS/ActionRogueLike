@@ -18,6 +18,8 @@ void ASDashProjectile::BeginPlay()
 
 void ASDashProjectile::Explode_Implementation()
 {
+	GetWorldTimerManager().ClearTimer(TimerHandle_Activate);
+
 	UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 
 	EffectComp->DeactivateSystem();
@@ -25,16 +27,16 @@ void ASDashProjectile::Explode_Implementation()
 	MovementComp->StopMovementImmediately();
 	SetActorEnableCollision(false);
 
+	// FTimerHandle TimerHandle_Teleport;
 	GetWorldTimerManager().SetTimer(TimerHandle_Teleport, this, &ASDashProjectile::TeleportInstigator, TeleportDelay);
 }
 
 void ASDashProjectile::TeleportInstigator()
 {
 	AActor* ActorToTeleport = GetInstigator();
-
-	FVector ProjLocation = GetActorLocation();
-	FRotator ProjRotation = GetActorRotation();
-
-	ActorToTeleport->TeleportTo(ProjLocation, ProjRotation);
-	// ActorToTeleport->GetActorRotation() // false, false
+	if (ensure(ActorToTeleport))
+	{
+		ActorToTeleport->TeleportTo(GetActorLocation(), ActorToTeleport->GetActorRotation(), false, false);
+		// ActorToTeleport->TeleportTo(GetActorLocation(), GetActorRotation());
+	}
 }
