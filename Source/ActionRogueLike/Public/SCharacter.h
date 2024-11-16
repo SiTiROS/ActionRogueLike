@@ -63,6 +63,10 @@ protected:
 	void Dash_TimeElapsed();
 	void PrimaryInteract();
 
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+
+	virtual void PostInitializeComponents() override;
 public:
 	virtual void Tick(float DeltaTime) override;
 

@@ -24,6 +24,10 @@ protected:
 	// HealthMax, Stamina, Strength
 
 public:
+
+	UFUNCTION(BlueprintCallable)
+	bool IsAlive() const;
+	
 	UPROPERTY(BlueprintAssignable) // можно подписаться в bp
 	FOnHealthChanged OnHealthChanged;
 	
