@@ -33,4 +33,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(float Delta);
+
+	virtual void BeginPlay() override;
 };

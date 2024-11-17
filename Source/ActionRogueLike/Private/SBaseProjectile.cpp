@@ -3,6 +3,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Components/AudioComponent.h"
 
 ASBaseProjectile::ASBaseProjectile()
 {
@@ -22,6 +23,8 @@ ASBaseProjectile::ASBaseProjectile()
 	MovementComp->bInitialVelocityInLocalSpace = true; // Начальная скорость снаряда задается в локальной системе координат
 	MovementComp->ProjectileGravityScale = 0.0f; // Гравитация 0
 
+	FlightSoundComp = CreateDefaultSubobject<UAudioComponent>("FlightSound");
+	
 	AActor::SetLifeSpan(4.0f);
 }
 
@@ -44,6 +47,8 @@ void ASBaseProjectile::Explode_Implementation()
 
 	UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 
+	UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+	
 	EffectComp->DeactivateSystem();
 
 	MovementComp->StopMovementImmediately();
