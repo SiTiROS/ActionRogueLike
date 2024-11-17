@@ -12,12 +12,6 @@ class ACTIONROGUELIKE_API USInteractionComponent : public UActorComponent
 
 public:
 	USInteractionComponent();
-	
+
 	void PrimaryInteract();
-
-protected:
-	virtual void BeginPlay() override;
-
-public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 };

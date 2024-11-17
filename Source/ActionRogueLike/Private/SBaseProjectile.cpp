@@ -35,7 +35,7 @@ void ASBaseProjectile::BeginPlay()
 	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
 
-void ASBaseProjectile::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
+void ASBaseProjectile::OnComponentHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
                                       const FHitResult& Hit)
 {
 	Explode();

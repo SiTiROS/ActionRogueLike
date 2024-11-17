@@ -20,6 +20,9 @@ public:
 	ASCharacter();
 
 protected:
+	UPROPERTY(EditAnywhere, Category = "Setup|FX")
+	UParticleSystem* SpawnParticle;
+
 	UPROPERTY(VisibleAnywhere, Category = "Setup|Component")
 	USpringArmComponent* SpringArmComp;
 
@@ -67,6 +70,7 @@ protected:
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
 
 	virtual void PostInitializeComponents() override;
+
 public:
 	virtual void Tick(float DeltaTime) override;
 

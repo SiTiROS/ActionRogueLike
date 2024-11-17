@@ -20,17 +20,22 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Attributes")
 	float MaxHealth;
-	
-	// HealthMax, Stamina, Strength
+
+	// Stamina, Strength
 
 public:
+	UFUNCTION(BlueprintCallable)
+	float GetHealth();
 
 	UFUNCTION(BlueprintCallable)
-	bool IsAlive() const;
+	float GetMaxHealth();
 	
+	UFUNCTION(BlueprintCallable)
+	bool IsAlive() const;
+
 	UPROPERTY(BlueprintAssignable) // можно подписаться в bp
 	FOnHealthChanged OnHealthChanged;
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(float Delta);
 

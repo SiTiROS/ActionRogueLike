@@ -6,17 +6,6 @@ USInteractionComponent::USInteractionComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-
-void USInteractionComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void USInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
 void USInteractionComponent::PrimaryInteract()
 {
 	FCollisionObjectQueryParams ObjectQueryParams;

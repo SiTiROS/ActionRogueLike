@@ -7,6 +7,7 @@
 #include "SInteractionComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "SBaseProjectile.h"
+#include "Kismet/GameplayStatics.h"
 
 ASCharacter::ASCharacter()
 	: AttackAnimDelay(0.2f)
@@ -128,6 +129,9 @@ void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)
 	// check(ClassToSpawn);
 	if (ensure(ClassToSpawn))
 	{
+		UGameplayStatics::SpawnEmitterAttached(SpawnParticle, GetMesh(), "Muzzle_01", FVector::ZeroVector, FRotator::ZeroRotator, FVector(1.0f),
+		                                       EAttachLocation::KeepRelativeOffset, true);
+
 		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
 		FActorSpawnParameters SpawnParams;
@@ -225,7 +229,7 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 	{
 		GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
 	}
-	
+
 	if (NewHealth <= 0.0f && Delta < 0.0f)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());

@@ -36,8 +36,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Setup|Effects")
 	USoundBase* HitSound;
 
-	UFUNCTION()
-	virtual void OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
+	UFUNCTION(BlueprintNativeEvent)
+	void OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
 	                            const FHitResult& Hit);
 
 	// BlueprintNativeEvent = C++ base implementation, can be expanded in Blueprints
