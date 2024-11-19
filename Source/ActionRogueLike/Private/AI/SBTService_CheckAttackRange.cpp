@@ -1,5 +1,4 @@
 #include "AI/SBTService_CheckAttackRange.h"
-
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -21,16 +20,15 @@ void USBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, u
 				APawn* AIPawn = AIController->GetPawn();
 				if (ensure(AIPawn))
 				{
-					float DistanceTo = FVector::Distance(TargetActor->GetActorLocation(), AIPawn->GetActorLocation());
+					float DistanceTo = FVector::Distance(TargetActor->GetActorLocation(), AIPawn->GetActorLocation()); // найти дистанцию между акторами
 
 					bool bWithinRange = DistanceTo < 2000.f;
 
 					bool bHasLOS = false;
 					if (bWithinRange)
 					{
-						bHasLOS = AIController->LineOfSightTo(TargetActor);
+						bHasLOS = AIController->LineOfSightTo(TargetActor); // видит ли бот игрока
 					}
-
 
 					BlackBoardComp->SetValueAsBool(AttackRangeKey.SelectedKeyName, bWithinRange && bHasLOS);
 				}
