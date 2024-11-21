@@ -7,29 +7,39 @@ USAttributeComponent::USAttributeComponent()
 
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
-	if (Health >= MaxHealth && Health <= 0.0f)
-	{
-		return false;
-	}
+	float OldHealth = Health;
+	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
-	if ((Delta + Health) > MaxHealth)
-	{
-		Health = MaxHealth;
-		OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
-		return true;
-	}
-
-	if ((Delta + Health) < 0.0f)
-	{
-		Health = 0.0f;
-		OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
-		return true;
-	}
-
-	Health += Delta;
-	OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
-	return true;
+	float ActualDelta = Health - OldHealth;
+	OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta); // транслирую изменения в делегат
+	return ActualDelta != 0.0f;
 }
+
+// bool USAttributeComponent::ApplyHealthChange(float Delta)
+// {
+// 	if (Health >= MaxHealth && Health <= 0.0f)
+// 	{
+// 		return false;
+// 	}
+//
+// 	if ((Delta + Health) > MaxHealth)
+// 	{
+// 		Health = MaxHealth;
+// 		OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
+// 		return true;
+// 	}
+//
+// 	if ((Delta + Health) < 0.0f)
+// 	{
+// 		Health = 0.0f;
+// 		OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
+// 		return true;
+// 	}
+//
+// 	Health += Delta;
+// 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
+// 	return true;
+// }
 
 void USAttributeComponent::BeginPlay()
 {
@@ -51,4 +61,9 @@ float USAttributeComponent::GetMaxHealth()
 bool USAttributeComponent::IsAlive() const
 {
 	return Health > 0.0f;
+}
+
+bool USAttributeComponent::IsFullHealth() const
+{
+	return Health >= MaxHealth;
 }

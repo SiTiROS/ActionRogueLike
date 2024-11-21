@@ -9,19 +9,17 @@ ASHealthPotion::ASHealthPotion()
 
 void ASHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 {
-	ASCharacter* Character = Cast<ASCharacter>(InstigatorPawn);
-
-	if (Character)
+	if (ASCharacter* Character = Cast<ASCharacter>(InstigatorPawn))
 	{
 		USAttributeComponent* Health = Cast<USAttributeComponent>(Character->GetComponentByClass(USAttributeComponent::StaticClass()));
 
-		if (Health && Health->GetHealth() >= Health->GetMaxHealth()) return;
-
-		if (Health->GetHealth() > 0 && Health->GetHealth() < Health->GetMaxHealth() && Health->IsAlive())
+		if (ensure(Health) && !Health->IsFullHealth() && Health->IsAlive())
 		{
-			Health->ApplyHealthChange(HealthToHeal);
+			if (Health->ApplyHealthChange(HealthToHeal))
+			{
+				HideAndCooldownPickup();
+				UE_LOG(LogTemp, Error, TEXT("ApplyHealthChange"));
+			}
 		}
 	}
-
-	Super::Interact_Implementation(InstigatorPawn);
 }

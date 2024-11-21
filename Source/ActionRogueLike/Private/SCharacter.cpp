@@ -10,7 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 
 ASCharacter::ASCharacter()
-	: AttackAnimDelay(0.2f)
+	: AttackAnimDelay(0.2f), HandSocketName("Muzzle_01"), TimeToHitParamName("TimeToHit")
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -127,12 +127,9 @@ void ASCharacter::MoveRight(float Value)
 void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)
 {
 	// check(ClassToSpawn);
-	if (ensure(ClassToSpawn))
+	if (ensureAlways(ClassToSpawn))
 	{
-		UGameplayStatics::SpawnEmitterAttached(SpawnParticle, GetMesh(), "Muzzle_01", FVector::ZeroVector, FRotator::ZeroRotator, FVector(1.0f),
-		                                       EAttachLocation::KeepRelativeOffset, true);
-
-		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+		FVector HandLocation = GetMesh()->GetSocketLocation(HandSocketName);
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -178,7 +175,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)
 
 void ASCharacter::PrimaryAttack()
 {
-	PlayAnimMontage(AttackAnim);
+	StartAttackEffect();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, AttackAnimDelay);
 }
@@ -193,7 +190,7 @@ void ASCharacter::PrimaryAttack_TimeElapsed()
 
 void ASCharacter::SecondaryAttack()
 {
-	PlayAnimMontage(AttackAnim);
+	StartAttackEffect();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_SecondaryAttack, this, &ASCharacter::SecondaryAttack_TimeElapsed, AttackAnimDelay);
 }
@@ -205,7 +202,7 @@ void ASCharacter::SecondaryAttack_TimeElapsed()
 
 void ASCharacter::Dash()
 {
-	PlayAnimMontage(AttackAnim);
+	StartAttackEffect();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_SecondaryAttack, this, &ASCharacter::Dash_TimeElapsed, AttackAnimDelay);
 }
@@ -223,11 +220,18 @@ void ASCharacter::PrimaryInteract()
 	}
 }
 
+void ASCharacter::StartAttackEffect()
+{
+	PlayAnimMontage(AttackAnim);
+
+	UGameplayStatics::SpawnEmitterAttached(CastingEffect, GetMesh(), HandSocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
+}
+
 void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
 {
 	if (Delta < 0.0f)
 	{
-		GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 	}
 
 	if (NewHealth <= 0.0f && Delta < 0.0f)

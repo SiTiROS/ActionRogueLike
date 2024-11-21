@@ -20,8 +20,8 @@ public:
 	ASCharacter();
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Setup|FX")
-	UParticleSystem* SpawnParticle;
+	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX")
+	UParticleSystem* CastingEffect;
 
 	UPROPERTY(VisibleAnywhere, Category = "Setup|Component")
 	USpringArmComponent* SpringArmComp;
@@ -44,11 +44,17 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
 	TSubclassOf<ASBaseProjectile> DashProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Setup|Attack")
-	float AttackAnimDelay;
-
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
 	UAnimMontage* AttackAnim;
+
+	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
+	float AttackAnimDelay;
+
+	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX")
+	FName HandSocketName;
+	
+	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX|Material")
+	FName TimeToHitParamName;
 
 	FTimerHandle TimerHandle_PrimaryAttack;
 	FTimerHandle TimerHandle_SecondaryAttack;
@@ -65,6 +71,7 @@ protected:
 	void Dash();
 	void Dash_TimeElapsed();
 	void PrimaryInteract();
+	void StartAttackEffect();
 
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);

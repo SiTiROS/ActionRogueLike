@@ -22,11 +22,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup")
 	float Cooldown;
 	
-	bool bIsCooldown;
-
-	void ActivateCooldown();
-	
-	virtual void BeginPlay() override;
+	void ShowPowerUp();
+	void HideAndCooldownPickup();
+	void SetPickupState(bool bNewIsActive);
 
 public:
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
