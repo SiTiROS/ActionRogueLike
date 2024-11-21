@@ -4,6 +4,8 @@
 #include "GameFramework/Character.h"
 #include "SAICharacter.generated.h"
 
+class UPawnSensingComponent;
+
 UCLASS()
 class ACTIONROGUELIKE_API ASAICharacter : public ACharacter
 {
@@ -13,8 +15,11 @@ public:
 	ASAICharacter();
 
 protected:
-	virtual void BeginPlay() override;
+	virtual void PostInitializeComponents() override;
 
-public:
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPawnSensingComponent* PawnSensingComp;
+
+	UFUNCTION()
+	void OnPawnSeen(APawn* Pawn);
 };
