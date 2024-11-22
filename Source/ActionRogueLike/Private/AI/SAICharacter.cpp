@@ -1,11 +1,14 @@
 #include "AI/SAICharacter.h"
 #include "AIController.h"
+#include "SAttributeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/PawnSensingComponent.h"
 
 ASAICharacter::ASAICharacter()
 {
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
+
+	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComponent"));
 }
 
 void ASAICharacter::PostInitializeComponents()

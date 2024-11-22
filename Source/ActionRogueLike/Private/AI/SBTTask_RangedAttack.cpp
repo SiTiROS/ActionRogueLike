@@ -26,6 +26,6 @@ EBTNodeResult::Type USBTTask_RangedAttack::ExecuteTask(UBehaviorTreeComponent& O
 
 		return NewProj ? EBTNodeResult::Succeeded : EBTNodeResult::Failed;
 	}
-	
+
 	return EBTNodeResult::Failed;
 }
