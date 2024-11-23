@@ -9,6 +9,8 @@ ASAICharacter::ASAICharacter()
 	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComponent"));
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void ASAICharacter::PostInitializeComponents()
@@ -24,7 +26,7 @@ void ASAICharacter::OnPawnSeen(APawn* Pawn)
 	if (AIController)
 	{
 		UBlackboardComponent* BBComp = AIController->GetBlackboardComponent();
-		
+
 		BBComp->SetValueAsObject("TargetActor", Pawn);
 
 		DrawDebugString(GetWorld(), Pawn->GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
