@@ -15,7 +15,7 @@ ASBaseProjectile::ASBaseProjectile()
 	SphereComp->OnComponentHit.AddDynamic(this, &ASBaseProjectile::OnComponentHit);
 
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
-	EffectComp->SetupAttachment(SphereComp);
+	EffectComp->SetupAttachment(RootComponent);
 
 	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComponent");
 	MovementComp->InitialSpeed = 1000.0f;
@@ -24,6 +24,7 @@ ASBaseProjectile::ASBaseProjectile()
 	MovementComp->ProjectileGravityScale = 0.0f; // Гравитация 0
 
 	FlightSoundComp = CreateDefaultSubobject<UAudioComponent>("FlightSound");
+	FlightSoundComp->SetupAttachment(RootComponent);
 	
 	AActor::SetLifeSpan(4.0f);
 }

@@ -10,36 +10,10 @@ bool USAttributeComponent::ApplyHealthChange(float Delta)
 	float OldHealth = Health;
 	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
-	float ActualDelta = Health - OldHealth;
+	float ActualDelta = Health - OldHealth; // показывает то, что реально отнялось или прибавилось
 	OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta); // транслирую изменения в делегат
 	return ActualDelta != 0.0f;
 }
-
-// bool USAttributeComponent::ApplyHealthChange(float Delta)
-// {
-// 	if (Health >= MaxHealth && Health <= 0.0f)
-// 	{
-// 		return false;
-// 	}
-//
-// 	if ((Delta + Health) > MaxHealth)
-// 	{
-// 		Health = MaxHealth;
-// 		OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
-// 		return true;
-// 	}
-//
-// 	if ((Delta + Health) < 0.0f)
-// 	{
-// 		Health = 0.0f;
-// 		OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
-// 		return true;
-// 	}
-//
-// 	Health += Delta;
-// 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta); // транслирую изменения в делегат
-// 	return true;
-// }
 
 void USAttributeComponent::BeginPlay()
 {

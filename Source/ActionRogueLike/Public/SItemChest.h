@@ -15,8 +15,6 @@ public:
 
 	void Interact_Implementation(APawn* InstigatorPawn);
 
-	virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY(EditAnywhere)
 	float TargetPitch;
 
@@ -26,6 +24,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* LidMesh;
-
-	virtual void BeginPlay() override;
 };
