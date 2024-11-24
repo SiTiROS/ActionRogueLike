@@ -15,7 +15,7 @@ void ASHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 
 		if (ensure(Health) && !Health->IsFullHealth() && Health->IsAlive())
 		{
-			if (Health->ApplyHealthChange(HealthToHeal))
+			if (Health->ApplyHealthChange(this, HealthToHeal))
 			{
 				HideAndCooldownPickup();
 				UE_LOG(LogTemp, Error, TEXT("ApplyHealthChange"));

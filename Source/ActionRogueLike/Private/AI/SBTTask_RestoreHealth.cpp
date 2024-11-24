@@ -13,7 +13,7 @@ EBTNodeResult::Type USBTTask_RestoreHealth::ExecuteTask(UBehaviorTreeComponent& 
 		if (!AIPawn) return EBTNodeResult::Failed;
 
 		USAttributeComponent* Health = AIPawn->GetComponentByClass<USAttributeComponent>();
-		if (Health->ApplyHealthChange(Health->GetMaxHealth()))
+		if (Health->ApplyHealthChange(AIPawn, Health->GetMaxHealth()))
 		{
 			return EBTNodeResult::Succeeded;
 		}

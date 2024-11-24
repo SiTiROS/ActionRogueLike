@@ -5,13 +5,13 @@ USAttributeComponent::USAttributeComponent()
 {
 }
 
-bool USAttributeComponent::ApplyHealthChange(float Delta)
+bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
 	float OldHealth = Health;
 	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
 	float ActualDelta = Health - OldHealth; // показывает то, что реально отнялось или прибавилось
-	OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta); // транслирую изменения в делегат
+	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta); // транслирую изменения в делегат
 	return ActualDelta != 0.0f;
 }
 

@@ -29,4 +29,6 @@ protected:
 	
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
+
+	void SetTargetActor(AActor* NewTarget) const ;
 };

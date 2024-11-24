@@ -25,13 +25,15 @@ void ASAICharacter::PostInitializeComponents()
 
 void ASAICharacter::OnPawnSeen(APawn* Pawn)
 {
+	SetTargetActor(Pawn);
+	DrawDebugString(GetWorld(), Pawn->GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
+}
+
+void ASAICharacter::SetTargetActor(AActor* NewTarget) const
+{
 	if (AAIController* AIController = Cast<AAIController>(GetController()))
 	{
-		UBlackboardComponent* BBComp = AIController->GetBlackboardComponent();
-
-		BBComp->SetValueAsObject("TargetActor", Pawn);
-
-		DrawDebugString(GetWorld(), Pawn->GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
+		AIController->GetBlackboardComponent()->SetValueAsObject("TargetActor", NewTarget);
 	}
 }
 
@@ -39,6 +41,11 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 {
 	if (Delta < 0.0f)
 	{
+		if (InstigatorActor != this)
+		{
+			SetTargetActor(InstigatorActor);
+		}
+
 		if (NewHealth <= 0.0f)
 		{
 			// Stop BT
