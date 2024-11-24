@@ -41,3 +41,21 @@ bool USAttributeComponent::IsFullHealth() const
 {
 	return Health >= MaxHealth;
 }
+
+USAttributeComponent* USAttributeComponent::GetAttributes(const AActor* FromActor)
+{
+	if (FromActor)
+	{
+		return Cast<USAttributeComponent>(FromActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+	}
+	return nullptr;
+}
+
+bool USAttributeComponent::IsActorAlive(const AActor* Actor)
+{
+	if (const USAttributeComponent* AttributesComp = GetAttributes(Actor))
+	{
+		return AttributesComp->IsAlive();
+	}
+	return false;
+}
