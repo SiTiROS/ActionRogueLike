@@ -4,8 +4,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/AudioComponent.h"
+#include "Camera/CameraShakeBase.h"
 
 ASBaseProjectile::ASBaseProjectile()
+	: ImpactShakeInnerRadius(250.0f), ImpactShakeOuterRadius(2500.0f)
 {
 	PrimaryActorTick.bCanEverTick = false;
 
@@ -25,7 +27,7 @@ ASBaseProjectile::ASBaseProjectile()
 
 	FlightSoundComp = CreateDefaultSubobject<UAudioComponent>("FlightSound");
 	FlightSoundComp->SetupAttachment(RootComponent);
-	
+
 	AActor::SetLifeSpan(4.0f);
 }
 
@@ -36,8 +38,9 @@ void ASBaseProjectile::BeginPlay()
 	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
 
-void ASBaseProjectile::OnComponentHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
-                                      const FHitResult& Hit)
+void ASBaseProjectile::OnComponentHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                                                     FVector NormalImpulse,
+                                                     const FHitResult& Hit)
 {
 	Explode();
 }
@@ -49,7 +52,9 @@ void ASBaseProjectile::Explode_Implementation()
 	UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 
 	UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
-	
+
+	UGameplayStatics::PlayWorldCameraShake(this, ImpactShake, GetActorLocation(), ImpactShakeInnerRadius, ImpactShakeOuterRadius);
+
 	EffectComp->DeactivateSystem();
 
 	MovementComp->StopMovementImmediately();
