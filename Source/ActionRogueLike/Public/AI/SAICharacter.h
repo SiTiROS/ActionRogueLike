@@ -21,14 +21,17 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	USAttributeComponent* AttributeComp;
-	
+
+	UPROPERTY(EditAnywhere, Category = "Setup|FX|Material")
+	FName TimeToHitParamName;
+
 	virtual void PostInitializeComponents() override;
 
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
-	
+
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
 
-	void SetTargetActor(AActor* NewTarget) const ;
+	void SetTargetActor(AActor* NewTarget) const;
 };
