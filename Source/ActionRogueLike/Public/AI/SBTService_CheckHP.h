@@ -9,12 +9,15 @@ class ACTIONROGUELIKE_API USBTService_CheckHP : public UBTService
 {
 	GENERATED_BODY()
 
+private:
+	USBTService_CheckHP();
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	FBlackboardKeySelector NeedHealth;
-	
+
 	UPROPERTY(EditAnywhere, Category = "AI")
-	float HealThreshold{0.2f};
+	float HealThreshold;
 
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 };

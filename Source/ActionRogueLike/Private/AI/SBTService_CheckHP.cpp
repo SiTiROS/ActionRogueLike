@@ -1,20 +1,24 @@
 #include "AI/SBTService_CheckHP.h"
 #include "AIController.h"
 #include "SAttributeComponent.h"
-#include "AI/SAICharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+
+USBTService_CheckHP::USBTService_CheckHP()
+	: HealThreshold(0.2f)
+{
+}
 
 void USBTService_CheckHP::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-	AAIController* AIController = OwnerComp.GetAIOwner();
-	if (ensure(AIController))
+	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
+
+	APawn* AIPawn = OwnerComp.GetAIOwner()->GetPawn();
+	if (ensure(AIPawn))
 	{
-		ASAICharacter* AICharacter = Cast<ASAICharacter>(AIController->GetPawn());
-		if (ensure(AICharacter))
+		USAttributeComponent* HealthComp = USAttributeComponent::GetAttributes(AIPawn); // AICharacter->GetComponentByClass<USAttributeComponent>()
+		if (ensure(HealthComp))
 		{
-			USAttributeComponent* Health = AICharacter->GetComponentByClass<USAttributeComponent>();
-			
-			bool bNeedHealth = (Health->GetHealth() / Health->GetMaxHealth() <= HealThreshold);
+			bool bNeedHealth = (HealthComp->GetHealth() / HealthComp->GetMaxHealth() <= HealThreshold);
 
 			OwnerComp.GetBlackboardComponent()->SetValueAsBool(NeedHealth.SelectedKeyName, bNeedHealth);
 		}
