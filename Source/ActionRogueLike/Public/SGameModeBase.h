@@ -40,4 +40,8 @@ protected:
 
 	UFUNCTION()
 	void OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
+
+	//debug
+	UFUNCTION(Exec) // доступна из консоли
+	void KillAll();
 };

@@ -52,7 +52,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX")
 	FName HandSocketName;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX|Material")
 	FName TimeToHitParamName;
 
@@ -82,4 +82,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//debug
+	UFUNCTION(Exec) // доступна из консоли
+	void HealSelf(float Amount = 100);
+
+	UFUNCTION(Exec) // доступна из консоли
+	void HealMaxSelf();
 };

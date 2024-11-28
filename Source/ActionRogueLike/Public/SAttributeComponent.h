@@ -42,6 +42,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsFullHealth() const;
 
+	UFUNCTION(BlueprintCallable)
+	void HealMaxHP();
+
+	UFUNCTION(BlueprintCallable)
+	bool Kill(AActor* InstigatorActor);
+
 	UPROPERTY(BlueprintAssignable) // можно подписаться в bp
 	FOnHealthChanged OnHealthChanged;
 

@@ -240,3 +240,18 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 		DisableInput(PC);
 	}
 }
+
+
+// Debug
+void ASCharacter::HealSelf(float Amount /* = 100 */)
+{
+	AttributeComp->ApplyHealthChange(this, Amount);
+}
+
+void ASCharacter::HealMaxSelf()
+{
+	AttributeComp->HealMaxHP();
+}
+
+// TODO: добавить хил макс хп или перезагрузкой или в компоненте здоровья HealMaxHp функцию добавить
+// TODO: перенести читы в менеджер читов и сделать UI меню
