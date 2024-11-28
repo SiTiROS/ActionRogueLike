@@ -7,6 +7,7 @@
 #include "EnvironmentQuery/EnvQueryTypes.h"
 #include "EnvironmentQuery/EnvQueryInstanceBlueprintWrapper.h"
 #include "DrawDebugHelpers.h"
+#include "SCharacter.h"
 
 ASGameModeBase::ASGameModeBase()
 	: SpawnTimerInterval(2.0f)
@@ -67,6 +68,33 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 	}
 }
 
+void ASGameModeBase::RespawnPlayerElapsed(AController* Controller)
+{
+	if (ensure(Controller))
+	{
+		Controller->UnPossess(); // удаляем игрока из контроллера на всякий случай
+
+		RestartPlayer(Controller);
+	}
+}
+
+void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
+{
+	ASCharacter* Player = Cast<ASCharacter>(VictimActor);
+	if (Player)
+	{
+		FTimerHandle TimerHandle_RespawnDelay;
+
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "RespawnPlayerElapsed", Player->GetController());
+
+		constexpr float RespawnDelay{2.0f};
+		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay, Delegate, RespawnDelay, false);
+	}
+	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Killer: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
+}
+
+
 // Debug
 void ASGameModeBase::KillAll()
 {
@@ -79,6 +107,4 @@ void ASGameModeBase::KillAll()
 			AttributeComp->Kill(this); // @fixme:: pass in player for kill credit
 		}
 	}
-}
-
-// TODO: перенести читы в менеджер читов и сделать UI меню
+} // TODO: перенести читы в менеджер читов и сделать UI меню

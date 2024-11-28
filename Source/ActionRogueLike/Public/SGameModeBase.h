@@ -20,6 +20,8 @@ public:
 
 	virtual void StartPlay() override;
 
+	virtual void OnActorKilled(AActor* VictimActor, AActor* Killer);
+
 protected:
 	FTimerHandle TimerHandle_SpawnBots;
 
@@ -41,6 +43,10 @@ protected:
 	UFUNCTION()
 	void OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
 
+	UFUNCTION()
+	void RespawnPlayerElapsed(AController* Controller);
+
+public:
 	//debug
 	UFUNCTION(Exec) // доступна из консоли
 	void KillAll();

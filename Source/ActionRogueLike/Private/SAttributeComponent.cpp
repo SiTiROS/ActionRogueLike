@@ -1,5 +1,7 @@
 #include "SAttributeComponent.h"
 
+#include "SGameModeBase.h"
+
 USAttributeComponent::USAttributeComponent()
 	: Health(100.0f), MaxHealth(100.0f)
 {
@@ -17,6 +19,17 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 
 	float ActualDelta = Health - OldHealth; // показывает то, что реально отнялось или прибавилось
 	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta); // транслирую изменения в делегат
+
+	// Died
+	if (ActualDelta < 0.0f && Health == 0.0f)
+	{
+		ASGameModeBase* GM = GetWorld()->GetAuthGameMode<ASGameModeBase>();
+		if (GM)
+		{
+			GM->OnActorKilled(GetOwner(), InstigatorActor); // в гейм моде подсчёт очков
+		}
+	}
+
 	return ActualDelta != 0.0f;
 }
 
