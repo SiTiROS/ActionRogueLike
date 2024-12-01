@@ -35,6 +35,12 @@ void ASCharacter::PostInitializeComponents()
 	AttributeComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged); // привязка функции к делегату
 }
 
+FVector ASCharacter::GetPawnViewLocation() const
+// переопределяем базовую функцию, чтобы скорректировать для нашего вида от 3его лица для GetActorEyesViewPoint версии для pawn
+{
+	return CameraComp->GetComponentLocation();
+}
+
 void ASCharacter::BeginPlay()
 {
 	Super::BeginPlay();

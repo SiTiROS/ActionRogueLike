@@ -9,6 +9,9 @@
 #include "DrawDebugHelpers.h"
 #include "SCharacter.h"
 
+static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT("Enable spawning of bots via timer."), ECVF_Cheat);
+// ECVF_Cheat - в финальной сборке не будет включен
+
 ASGameModeBase::ASGameModeBase()
 	: SpawnTimerInterval(2.0f)
 {
@@ -23,6 +26,12 @@ void ASGameModeBase::StartPlay()
 
 void ASGameModeBase::SpawnBotTimerElapsed()
 {
+	if (!CVarSpawnBots.GetValueOnGameThread()) // если чит false, то не спавним
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Bot spawning disabled via char 'CVarSpawnBots'. "));
+		return;
+	}
+	
 	int32 NrOfAliveBots = 0;
 	for (TActorIterator<ASAICharacter> It(GetWorld()); It; ++It)
 	{

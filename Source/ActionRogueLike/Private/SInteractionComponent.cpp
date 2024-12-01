@@ -1,13 +1,18 @@
 #include "SInteractionComponent.h"
 #include "SGameplayInterface.h"
 
+static TAutoConsoleVariable<bool> CVarDrawDebugInteraction(TEXT("su.InteractionDebugDraw"),
+                                                           false, TEXT("Enable Debug Lines for Interact Component. "), ECVF_Cheat);
+
 USInteractionComponent::USInteractionComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void USInteractionComponent::PrimaryInteract()
+void USInteractionComponent::PrimaryInteract() const
 {
+	bool bDrawDebug = CVarDrawDebugInteraction.GetValueOnGameThread();
+
 	FCollisionObjectQueryParams ObjectQueryParams;
 	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
 
@@ -36,8 +41,12 @@ void USInteractionComponent::PrimaryInteract()
 
 	for (FHitResult Hit : Hits)
 	{
-		AActor* HitActor = Hit.GetActor();
-		if (HitActor)
+		if (bDrawDebug)
+		{
+			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
+		}
+
+		if (AActor* HitActor = Hit.GetActor())
 		{
 			if (HitActor->Implements<USGameplayInterface>())
 			{
@@ -47,8 +56,10 @@ void USInteractionComponent::PrimaryInteract()
 				break;
 			}
 		}
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
 	}
 
-	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
+	if (bDrawDebug)
+	{
+		DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
+	}
 }

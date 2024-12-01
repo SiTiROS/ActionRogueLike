@@ -13,5 +13,5 @@ class ACTIONROGUELIKE_API USInteractionComponent : public UActorComponent
 public:
 	USInteractionComponent();
 
-	void PrimaryInteract();
+	void PrimaryInteract() const;
 };
