@@ -25,26 +25,47 @@ public:
 protected:
 	FTimerHandle TimerHandle_SpawnBots;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|AI")
 	float SpawnTimerInterval;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|AI")
 	UEnvQuery* SpawnBotQuery;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|AI")
 	TSubclassOf<ASAICharacter> MinionClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|AI")
 	UCurveFloat* DifficultyCurve;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Setup|Credits")
+	int32 CreditsPerKill;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|Pickups")
+	UEnvQuery* PickupSpawnQuery;
+
+	/* All pickup classes used to spawn with EQS at match start */
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|Pickups")
+	TArray<TSubclassOf<AActor>> PickupClasses;
+
+	/* Distance required between pickup spawn locations */
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|Pickups")
+	float RequiredPickupDistance;
+
+	/* Amount of pickup to spawn during match start */
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|Pickups")
+	int32 DesiredPickupCount;
 
 	UFUNCTION()
 	void SpawnBotTimerElapsed();
 
 	UFUNCTION()
-	void OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
+	void OnBotSpawnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
 
 	UFUNCTION()
 	void RespawnPlayerElapsed(AController* Controller);
+
+	UFUNCTION()
+	void OnPickupSpawnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
 
 public:
 	//debug

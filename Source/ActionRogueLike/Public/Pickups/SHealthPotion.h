@@ -11,11 +11,13 @@ class ACTIONROGUELIKE_API ASHealthPotion : public ASPickable
 
 public:
 	ASHealthPotion();
-	
-protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup")
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup|Heal")
 	float HealthToHeal;
+	
+	UPROPERTY(EditAnywhere, Category = "Setup|Credit")
+	int32 CreditCost;
 	
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 };

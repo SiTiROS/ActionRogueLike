@@ -5,6 +5,9 @@
 #include "GameFramework/Actor.h"
 #include "SPickable.generated.h"
 
+class USphereComponent;
+class UStaticMeshComponent;
+
 UCLASS(ABSTRACT)
 class ACTIONROGUELIKE_API ASPickable : public AActor, public ISGameplayInterface
 {
@@ -14,14 +17,17 @@ public:
 	ASPickable();
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "Setup")
-	UStaticMeshComponent* PickableMesh;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	USphereComponent* SphereComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UStaticMeshComponent* MeshComp;
 
 	FTimerHandle TimerToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Setup")
 	float Cooldown;
-	
+
 	void ShowPowerUp();
 	void HideAndCooldownPickup();
 	void SetPickupState(bool bNewIsActive);
