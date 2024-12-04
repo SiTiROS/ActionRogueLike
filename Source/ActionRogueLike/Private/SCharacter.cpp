@@ -3,6 +3,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
+#include "SActionComponent.h"
 #include "SAttributeComponent.h"
 #include "SInteractionComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -27,6 +28,8 @@ ASCharacter::ASCharacter()
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>(TEXT("InteractionComp"));
 
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
+
+	ActionComp = CreateDefaultSubobject<USActionComponent>(TEXT("ActionComp"));
 }
 
 void ASCharacter::PostInitializeComponents()
@@ -99,6 +102,10 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	// Телепорт
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ASCharacter::Dash);
+
+	// Бег
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ASCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ASCharacter::SprintStop);
 }
 
 void ASCharacter::MoveForward(float Value)
@@ -128,6 +135,16 @@ void ASCharacter::MoveRight(float Value)
 
 	// Добавить движение влево/вправо
 	AddMovementInput(RightVector, Value);
+}
+
+void ASCharacter::SprintStart()
+{
+	ActionComp->StartActionByName(this, "Sprint");
+}
+
+void ASCharacter::SprintStop()
+{
+	ActionComp->StopActionByName(this, "Sprint");
 }
 
 void ASCharacter::SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn)

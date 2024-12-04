@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+class USActionComponent;
 class USAttributeComponent;
 class USInteractionComponent;
 class USpringArmComponent;
@@ -35,6 +36,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup|Component")
 	USAttributeComponent* AttributeComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup|Component")
+	USActionComponent* ActionComp;
+	
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
 	TSubclassOf<ASBaseProjectile> ProjectileClass;
 
@@ -63,6 +67,8 @@ protected:
 	virtual void BeginPlay() override;
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void SprintStart();
+	void SprintStop();
 	void SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn);
 	void PrimaryAttack();
 	void PrimaryAttack_TimeElapsed();
