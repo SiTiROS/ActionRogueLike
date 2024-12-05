@@ -9,8 +9,6 @@ class USAttributeComponent;
 class USInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
-class UAnimMontage;
-class ASBaseProjectile;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
@@ -21,9 +19,6 @@ public:
 	ASCharacter();
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX")
-	UParticleSystem* CastingEffect;
-
 	UPROPERTY(VisibleAnywhere, Category = "Setup|Component")
 	USpringArmComponent* SpringArmComp;
 
@@ -38,46 +33,27 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup|Component")
 	USActionComponent* ActionComp;
-	
-	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
-	TSubclassOf<ASBaseProjectile> ProjectileClass;
-
-	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
-	TSubclassOf<ASBaseProjectile> BlackHoleProjectileClass;
-
-	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
-	TSubclassOf<ASBaseProjectile> DashProjectileClass;
-
-	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
-	UAnimMontage* AttackAnim;
-
-	UPROPERTY(EditAnywhere, Category = "Setup|Attack")
-	float AttackAnimDelay;
-
-	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX")
-	FName HandSocketName;
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX|Material")
 	FName TimeToHitParamName;
 
-	FTimerHandle TimerHandle_PrimaryAttack;
-	FTimerHandle TimerHandle_SecondaryAttack;
-	FTimerHandle TimerHandle_Dash;
-
 	virtual void BeginPlay() override;
+
 	void MoveForward(float Value);
+
 	void MoveRight(float Value);
+
 	void SprintStart();
+
 	void SprintStop();
-	void SpawnProjectile(TSubclassOf<ASBaseProjectile> ClassToSpawn);
+
 	void PrimaryAttack();
-	void PrimaryAttack_TimeElapsed();
+
 	void SecondaryAttack();
-	void SecondaryAttack_TimeElapsed();
+
 	void Dash();
-	void Dash_TimeElapsed();
+
 	void PrimaryInteract();
-	void StartAttackEffect();
 
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
@@ -85,7 +61,7 @@ protected:
 	virtual void PostInitializeComponents() override;
 
 	virtual FVector GetPawnViewLocation() const override;
-	
+
 public:
 	virtual void Tick(float DeltaTime) override;
 
