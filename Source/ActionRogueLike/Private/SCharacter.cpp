@@ -44,11 +44,6 @@ FVector ASCharacter::GetPawnViewLocation() const
 	return CameraComp->GetComponentLocation();
 }
 
-void ASCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void ASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

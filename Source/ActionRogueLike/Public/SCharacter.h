@@ -37,8 +37,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX|Material")
 	FName TimeToHitParamName;
 
-	virtual void BeginPlay() override;
-
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
