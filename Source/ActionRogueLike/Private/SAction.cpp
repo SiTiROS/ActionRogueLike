@@ -10,7 +10,7 @@ void USAction::StartAction_Implementation(AActor* Instigator)
 
 	bIsRunning = true;
 }
-
+	
 void USAction::StopAction_Implementation(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Stopped: %s"), *GetNameSafe(this));
