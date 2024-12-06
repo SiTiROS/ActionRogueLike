@@ -15,7 +15,7 @@ static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT
 ASGameModeBase::ASGameModeBase()
 	: SpawnTimerInterval(2.0f), CreditsPerKill(2), DesiredPickupCount(10), RequiredPickupDistance(2000)
 {
-	PlayerStateClass = ASPlayerState::StaticClass();
+	PlayerStateClass = ASPlayerState::StaticClass(); // устанавливаем базовый класс для PlayerState
 }
 
 void ASGameModeBase::StartPlay()
