@@ -3,9 +3,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
-#include "SActionComponent.h"
-#include "SAttributeComponent.h"
-#include "SInteractionComponent.h"
+#include "Components/SActionComponent.h"
+#include "Components/SAttributeComponent.h"
+#include "Components/SInteractionComponent.h"
 
 static TAutoConsoleVariable<bool> CVarDrawDebugRotationVisualization(TEXT("su.CharacterRotationDebugDraw"),
                                                                      false, TEXT("Enable Debug for Projectile. "), ECVF_Cheat);

@@ -1,5 +1,5 @@
 #include "SMagicProjectile.h"
-#include "SActionComponent.h"
+#include "Components/SActionComponent.h"
 #include "SGameplayFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"

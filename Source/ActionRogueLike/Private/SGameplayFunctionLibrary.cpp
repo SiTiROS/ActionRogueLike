@@ -1,5 +1,5 @@
 #include "SGameplayFunctionLibrary.h"
-#include "SAttributeComponent.h"
+#include "Components/SAttributeComponent.h"
 
 bool USGameplayFunctionLibrary::ApplyDamage(AActor* DamageCauser, AActor* TargetActor, float DamageAmount)
 {

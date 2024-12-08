@@ -18,11 +18,11 @@ void USWorldUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 	{
 		float Scale = UWidgetLayoutLibrary::GetViewportScale(this); // коэффициент разрешения экрана
 
-		ScreenPosition /= Scale; // вычисляем положение размещения виджета относительна нашего разрешения экрана
+		ScreenPosition /= Scale; // вычисляем положение размещения виджета относительно нашего разрешения экрана
 
 		if (ParentSizeBox)
 		{
-			ParentSizeBox->SetRenderTranslation(ScreenPosition); // бинженный бокс выставляем в полученную позицию
+			ParentSizeBox->SetRenderTranslation(ScreenPosition); // бинженый бокс выставляем в полученную позицию
 		}
 	}
 }

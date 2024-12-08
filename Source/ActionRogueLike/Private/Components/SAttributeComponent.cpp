@@ -1,4 +1,4 @@
-#include "SAttributeComponent.h"
+#include "Components/SAttributeComponent.h"
 #include "SGameModeBase.h"
 
 static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplier"),

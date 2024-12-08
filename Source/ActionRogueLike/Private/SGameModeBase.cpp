@@ -1,6 +1,6 @@
 #include "SGameModeBase.h"
 #include "EngineUtils.h"
-#include "SAttributeComponent.h"
+#include "Components/SAttributeComponent.h"
 #include "AI/SAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "EnvironmentQuery/EnvQueryTypes.h"

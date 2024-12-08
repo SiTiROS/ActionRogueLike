@@ -1,5 +1,5 @@
 #include "STargetDummy.h"
-#include "SAttributeComponent.h"
+#include "Components/SAttributeComponent.h"
 
 ASTargetDummy::ASTargetDummy()
 {

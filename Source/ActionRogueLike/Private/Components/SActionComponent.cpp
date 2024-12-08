@@ -1,4 +1,4 @@
-#include "SActionComponent.h"
+#include "Components/SActionComponent.h"
 #include "SAction.h"
 
 USActionComponent::USActionComponent()

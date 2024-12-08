@@ -1,6 +1,6 @@
 #include "Pickups/SHealthPotion.h"
 #include "SCharacter.h"
-#include "SAttributeComponent.h"
+#include "Components/SAttributeComponent.h"
 #include "SPlayerState.h"
 
 ASHealthPotion::ASHealthPotion()

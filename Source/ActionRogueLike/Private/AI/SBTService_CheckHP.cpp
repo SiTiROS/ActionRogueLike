@@ -1,6 +1,6 @@
 #include "AI/SBTService_CheckHP.h"
 #include "AIController.h"
-#include "SAttributeComponent.h"
+#include "Components/SAttributeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 USBTService_CheckHP::USBTService_CheckHP()

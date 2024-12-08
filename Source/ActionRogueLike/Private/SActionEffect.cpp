@@ -1,5 +1,5 @@
 #include "SActionEffect.h"
-#include "SActionComponent.h"
+#include "Components/SActionComponent.h"
 
 USActionEffect::USActionEffect()
 {

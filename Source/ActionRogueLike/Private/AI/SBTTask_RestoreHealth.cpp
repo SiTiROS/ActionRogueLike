@@ -1,6 +1,6 @@
 #include "AI/SBTTask_RestoreHealth.h"
 #include "AIController.h"
-#include "SAttributeComponent.h"
+#include "Components/SAttributeComponent.h"
 #include "AI/SAICharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 

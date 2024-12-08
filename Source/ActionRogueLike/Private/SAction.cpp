@@ -1,5 +1,5 @@
 #include "SAction.h"
-#include "SActionComponent.h"
+#include "Components/SActionComponent.h"
 
 void USAction::StartAction_Implementation(AActor* Instigator)
 {
