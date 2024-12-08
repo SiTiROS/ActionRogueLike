@@ -13,7 +13,7 @@ static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT
 // ECVF_Cheat - в финальной сборке не будет включен
 
 ASGameModeBase::ASGameModeBase()
-	: SpawnTimerInterval(2.0f), CreditsPerKill(2), DesiredPickupCount(10), RequiredPickupDistance(2000)
+	: SpawnTimerInterval(2.0f), CreditsPerKill(2), RequiredPickupDistance(2000), DesiredPickupCount(10)
 {
 	PlayerStateClass = ASPlayerState::StaticClass(); // устанавливаем базовый класс для PlayerState
 }
