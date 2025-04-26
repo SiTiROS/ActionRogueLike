@@ -5,7 +5,7 @@ static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplie
                                                         1.0f, TEXT("Global Damage Modifier for Attribute Component. "), ECVF_Cheat);
 
 USAttributeComponent::USAttributeComponent()
-	: Health(100.0f), MaxHealth(100.0f)
+	: Health(100.0f), MaxHealth(100.0f), Rage(0.0f), RageMax(100.0f)
 {
 }
 
@@ -49,14 +49,40 @@ void USAttributeComponent::BeginPlay()
 	Health = MaxHealth;
 }
 
-float USAttributeComponent::GetHealth()
+float USAttributeComponent::GetRage() const
+{
+	return Rage;
+}
+
+bool USAttributeComponent::ApplyRage(AActor* InstigatorActor, float Delta)
+{
+	float OldRage = Rage;
+
+	Rage = FMath::Clamp(Rage + Delta, 0.0f, RageMax);
+
+	float ActualDelta = Rage - OldRage;
+	if (ActualDelta != 0.0f)
+	{
+		OnRageChanged.Broadcast(InstigatorActor, this, Rage, ActualDelta);
+	}
+
+	return ActualDelta != 0;
+}
+
+
+float USAttributeComponent::GetHealth() const
 {
 	return Health;
 }
 
-float USAttributeComponent::GetMaxHealth()
+float USAttributeComponent::GetMaxHealth() const
 {
 	return MaxHealth;
+}
+
+float USAttributeComponent::GetHealthPercent() const
+{
+	return Health / MaxHealth;
 }
 
 bool USAttributeComponent::IsAlive() const

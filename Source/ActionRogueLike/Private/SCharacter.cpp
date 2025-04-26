@@ -173,12 +173,18 @@ void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent*
 	if (Delta < 0.0f)
 	{
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+
+		AttributeComp->ApplyRage(InstigatorActor, FMath::Abs(Delta));
 	}
 
+	// Death
 	if (NewHealth <= 0.0f && Delta < 0.0f)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());
 		DisableInput(PC);
+
+		// Set lifespan
+		SetLifeSpan(3.0f);
 	}
 }
 
