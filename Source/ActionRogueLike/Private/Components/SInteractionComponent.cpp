@@ -20,7 +20,12 @@ void USInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FindBestInteractable();
+	APawn* MyPawn = Cast<APawn>(GetOwner());
+
+	if (MyPawn->IsLocallyControlled())
+	{
+		FindBestInteractable();
+	}
 }
 
 void USInteractionComponent::FindBestInteractable()
@@ -37,7 +42,7 @@ void USInteractionComponent::FindBestInteractable()
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 
 	FVector End = EyeLocation + EyeRotation.Vector() * TraceDistance;
-	
+
 	TArray<FHitResult> Hits;
 
 	FCollisionShape Shape;
@@ -99,9 +104,14 @@ void USInteractionComponent::FindBestInteractable()
 	}
 }
 
-void USInteractionComponent::PrimaryInteract() const
+void USInteractionComponent::PrimaryInteract()
 {
-	if (!FocusedActor)
+	ServerInteract(FocusedActor);
+}
+
+void USInteractionComponent::ServerInteract_Implementation(AActor* InFocus)
+{
+	if (!InFocus)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "No Focus Actor to Interact.");
 		return;
@@ -109,5 +119,5 @@ void USInteractionComponent::PrimaryInteract() const
 
 	APawn* MyPawn = Cast<APawn>(GetOwner());
 
-	ISGameplayInterface::Execute_Interact(FocusedActor, MyPawn);
+	ISGameplayInterface::Execute_Interact(InFocus, MyPawn);
 }

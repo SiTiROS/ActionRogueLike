@@ -1,14 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Pickups/SPickablePowerup.h"
-#include "SCharacter.h"
 #include "Components/SActionComponent.h"
 #include "SAction.h"
 
-
 void ASPickablePowerup::Interact_Implementation(APawn* InstigatorPawn)
 {
-	// Make sure we have instigator & that action class was set up
+	// Проверка InstigatorPawn и заполнен ли ActionToGrant
 	if (!ensure(InstigatorPawn && ActionToGrant))
 	{
 		return;
