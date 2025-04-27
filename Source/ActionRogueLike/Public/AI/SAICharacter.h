@@ -28,6 +28,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	USActionComponent* ActionComp;
 
+	/* Material parameter for Hitflashes */
 	UPROPERTY(EditAnywhere, Category = "Setup|FX|Material")
 	FName TimeToHitParamName;
 
@@ -36,6 +37,10 @@ protected:
 
 	USWorldUserWidget* ActiveHealthBar;
 
+	/* Widget to display when bot first sees a player. */
+	UPROPERTY(EditDefaultsOnly, Category = "Setup|UI")
+	TSubclassOf<UUserWidget> SpottedWidgetClass;
+	
 	virtual void PostInitializeComponents() override;
 
 	UFUNCTION()
@@ -44,5 +49,13 @@ protected:
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
 
+	UFUNCTION(BlueprintCallable, Category = "Setup|AI")
+	AActor* GetTargetActor() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Setup|AI")
 	void SetTargetActor(AActor* NewTarget) const;
+
+	/* Key for AI Blackboard 'TargetActor' */
+	UPROPERTY(VisibleAnywhere, Category = "Setup|AI")
+	FName TargetActorKey;
 };

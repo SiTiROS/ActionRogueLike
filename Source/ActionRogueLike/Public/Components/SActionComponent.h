@@ -30,6 +30,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	bool StopActionByName(AActor* Instigator, FName ActionName);
 
+	// Вернёт первое совпадение
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	USAction* GetAction(TSubclassOf<USAction> ActionClass) const;
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "Actions")
 	TArray<TSubclassOf<USAction>> DefaultActions;
