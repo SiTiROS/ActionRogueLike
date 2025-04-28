@@ -12,6 +12,8 @@ ASPickable::ASPickable()
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
 	//MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision); // Disable collision, instead we use SphereComp to handle interaction queries
 	MeshComp->SetupAttachment(RootComponent);
+
+	SetReplicates(true);
 }
 
 void ASPickable::Interact_Implementation(APawn* InstigatorPawn)

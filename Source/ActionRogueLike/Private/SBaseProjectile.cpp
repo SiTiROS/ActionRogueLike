@@ -29,6 +29,8 @@ ASBaseProjectile::ASBaseProjectile()
 	FlightSoundComp->SetupAttachment(RootComponent);
 
 	AActor::SetLifeSpan(4.0f);
+
+	SetReplicates(true);
 }
 
 void ASBaseProjectile::BeginPlay()
