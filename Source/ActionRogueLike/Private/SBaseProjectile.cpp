@@ -30,7 +30,7 @@ ASBaseProjectile::ASBaseProjectile()
 
 	AActor::SetLifeSpan(4.0f);
 
-	SetReplicates(true);
+	// SetReplicates(true);
 }
 
 void ASBaseProjectile::BeginPlay()

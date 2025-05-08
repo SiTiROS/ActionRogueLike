@@ -1,12 +1,14 @@
 #include "Components/SAttributeComponent.h"
 #include "SGameModeBase.h"
+#include "Net/UnrealNetwork.h"
 
 static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplier"),
                                                         1.0f, TEXT("Global Damage Modifier for Attribute Component. "), ECVF_Cheat);
 
 USAttributeComponent::USAttributeComponent()
-	: Health(100.0f), MaxHealth(100.0f), Rage(0.0f), RageMax(100.0f)
+	: Health(100.0f), MaxHealth(Health), Rage(0.0f), MaxRage(100.0f)
 {
+	SetIsReplicatedByDefault(true);
 }
 
 bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
@@ -27,7 +29,12 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 	Health = FMath::Clamp(Health + Delta, 0.0f, MaxHealth);
 
 	float ActualDelta = Health - OldHealth; // показывает то, что реально отнялось или прибавилось
-	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta); // транслирую изменения в делегат
+
+	if (ActualDelta != 0.0f)
+	{
+		// OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta); // транслирую изменения в делегат
+		MulticastHealthChange(InstigatorActor, Health, ActualDelta); // реплицированная передача в делегату		
+	}
 
 	// Died
 	if (ActualDelta < 0.0f && Health == 0.0f)
@@ -58,12 +65,13 @@ bool USAttributeComponent::ApplyRage(AActor* InstigatorActor, float Delta)
 {
 	float OldRage = Rage;
 
-	Rage = FMath::Clamp(Rage + Delta, 0.0f, RageMax);
+	Rage = FMath::Clamp(Rage + Delta, 0.0f, MaxRage);
 
 	float ActualDelta = Rage - OldRage;
 	if (ActualDelta != 0.0f)
 	{
-		OnRageChanged.Broadcast(InstigatorActor, this, Rage, ActualDelta);
+		// OnRageChanged.Broadcast(InstigatorActor, this, Rage, ActualDelta);
+		MulticastRageChange(InstigatorActor, Rage, ActualDelta);
 	}
 
 	return ActualDelta != 0;
@@ -83,6 +91,11 @@ float USAttributeComponent::GetMaxHealth() const
 float USAttributeComponent::GetHealthPercent() const
 {
 	return Health / MaxHealth;
+}
+
+float USAttributeComponent::GetRagePercent() const
+{
+	return Rage / MaxRage;
 }
 
 bool USAttributeComponent::IsAlive() const
@@ -121,4 +134,28 @@ bool USAttributeComponent::IsActorAlive(const AActor* Actor)
 		return AttributesComp->IsAlive();
 	}
 	return false;
+}
+
+void USAttributeComponent::MulticastHealthChange_Implementation(AActor* InstigatorActor, float NewHealth, float Delta)
+{
+	OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, Delta);
+}
+
+void USAttributeComponent::MulticastRageChange_Implementation(AActor* InstigatorActor, float NewRage, float Delta)
+{
+	OnRageChanged.Broadcast(InstigatorActor, this, NewRage, Delta);
+}
+
+void USAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(USAttributeComponent, Health);
+	DOREPLIFETIME(USAttributeComponent, MaxHealth);
+	DOREPLIFETIME(USAttributeComponent, MaxRage);
+	DOREPLIFETIME(USAttributeComponent, Rage);
+
+
+	// DOREPLIFETIME_CONDITION(USAttributeComponent, Health, COND_OwnerOnly); // доступно только владельцу
+	// DOREPLIFETIME_CONDITION(USAttributeComponent, Health, COND_InitialOnly); // только при первом появлении
 }

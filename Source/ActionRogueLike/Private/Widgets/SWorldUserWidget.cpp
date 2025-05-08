@@ -10,6 +10,7 @@ void USWorldUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
 	if (!IsValid(AttachedActor)) 
 	{
 		RemoveFromParent();
+		UE_LOG(LogTemp, Warning, TEXT("AttachedActor is NULL"));
 		return;
 	}
 

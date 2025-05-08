@@ -24,20 +24,32 @@ public:
 	static bool IsActorAlive(const AActor* Actor);
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Replicated, Category = "Attributes")
 	float Health;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Replicated, Category = "Attributes")
 	float MaxHealth;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Replicated, Category = "Attributes")
 	float Rage;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Attributes")
-	float RageMax;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Replicated, Category = "Attributes")
+	float MaxRage;
 
 	// Stamina, Strength
 
+	// UPROPERTY(ReplicatedUsing="")
+	// bool bIsAlive;
+
+	// UPROPERTY(ReplicatedUsing="")
+	// bool bIsRageFull;
+	
+	UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable once we moved the 'state' our of scharacter
+	void MulticastHealthChange(AActor* InstigatorActor, float NewHealth, float Delta);
+
+	UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable once we moved the 'state' our of scharacter
+	void MulticastRageChange(AActor* InstigatorActor, float NewRage, float Delta);
+	
 public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealth() const;
@@ -47,6 +59,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealthPercent() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	float GetRagePercent() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool IsAlive() const;
