@@ -51,6 +51,7 @@ protected:
 
 	void Dash();
 
+	UFUNCTION(BlueprintCallable)
 	void PrimaryInteract();
 
 	UFUNCTION()

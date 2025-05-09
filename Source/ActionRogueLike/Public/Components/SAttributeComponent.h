@@ -91,4 +91,13 @@ public:
 	bool ApplyRage(AActor* InstigatorActor, float Delta);
 	
 	virtual void BeginPlay() override;
+
+
+public:
+#if WITH_AUTOMATION_TESTS
+	void InitHealth(float InHealth)
+	{
+		Health = FMath::Clamp(InHealth, 0.0f, MaxHealth);
+	}
+#endif
 };
