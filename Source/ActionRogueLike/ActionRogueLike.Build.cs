@@ -12,14 +12,17 @@ public class ActionRogueLike : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core", "CoreUObject", "Engine", "InputCore", "AIModule", "GameplayTasks", "UMG", "GameplayTags",
-			"AutomationController", "AutomationTest", "UnrealEd",
+			"AutomationController", "AutomationTest", "UnrealEd", "FunctionalTesting",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
 		PublicIncludePaths.AddRange(new string[]
 			{
-				Path.Combine(ModuleDirectory, "Tests")
+				// Path.Combine(ModuleDirectory, "Tests")
+				"ActionRogueLike/Tests/",
+				"ActionRogueLike/Tests/FunctionalTests",
+				"ActionRogueLike/Tests/UnitTests",
 			}
 		);
 

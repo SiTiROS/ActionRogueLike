@@ -18,6 +18,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	float TargetPitch;
 
+public:
+	UFUNCTION()
+	bool IsLidOpened() const { return bLidOpened; }
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
