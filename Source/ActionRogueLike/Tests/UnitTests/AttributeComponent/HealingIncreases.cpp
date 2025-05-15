@@ -5,7 +5,7 @@
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHealIncreasesHealthTest,
                                  "Project.Attribute.Heal.Increases",
-                                 EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+                                 EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::CriticalPriority)
 
 
 bool FHealIncreasesHealthTest::RunTest(const FString& Parameters)
@@ -21,7 +21,6 @@ bool FHealIncreasesHealthTest::RunTest(const FString& Parameters)
 
 	
 	AttributeComponent->InitHealth(60.0f); 
-	const float InitialHealth = AttributeComponent->GetHealth();
 	AttributeComponent->ApplyHealthChange(DummyActor, +25.0f);
 
 	// Check new health

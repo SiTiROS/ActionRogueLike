@@ -1,12 +1,13 @@
 #include "Components/SAttributeComponent.h"
 #include "SGameModeBase.h"
+#include "SUtils.h"
 #include "Net/UnrealNetwork.h"
 
 static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplier"),
                                                         1.0f, TEXT("Global Damage Modifier for Attribute Component. "), ECVF_Cheat);
 
 USAttributeComponent::USAttributeComponent()
-	: Health(100.0f), MaxHealth(Health), Rage(0.0f), MaxRage(100.0f)
+	: Health(MaxHealth), MaxHealth(100.0f), Rage(0.0f), MaxRage(100.0f)
 {
 	SetIsReplicatedByDefault(true);
 }
@@ -122,7 +123,8 @@ USAttributeComponent* USAttributeComponent::GetAttributes(const AActor* FromActo
 {
 	if (FromActor)
 	{
-		return Cast<USAttributeComponent>(FromActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+		//return Cast<USAttributeComponent>(FromActor->GetComponentByClass(USAttributeComponent::StaticClass()));
+		return SUtils::GetComponent<USAttributeComponent>(FromActor);
 	}
 	return nullptr;
 }

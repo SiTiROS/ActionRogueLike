@@ -3,6 +3,7 @@
 #include "Pickups/SPickablePowerup.h"
 #include "Components/SActionComponent.h"
 #include "SAction.h"
+#include "SUtils.h"
 
 void ASPickablePowerup::Interact_Implementation(APawn* InstigatorPawn)
 {
@@ -12,8 +13,7 @@ void ASPickablePowerup::Interact_Implementation(APawn* InstigatorPawn)
 		return;
 	}
 
-	USActionComponent* ActionComponent = Cast<USActionComponent>(InstigatorPawn->GetComponentByClass(USActionComponent::StaticClass()));
-	if (ActionComponent)
+	if (USActionComponent* ActionComponent = SUtils::GetComponent<USActionComponent>(InstigatorPawn))
 	{
 		if (ActionComponent->GetAction(ActionToGrant))
 		{

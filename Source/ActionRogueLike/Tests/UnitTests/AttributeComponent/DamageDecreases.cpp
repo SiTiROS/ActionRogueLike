@@ -5,7 +5,7 @@
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageDecreasesHealthTest,
                                  "Project.Attribute.Damage.Decreases",
-                                 EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+                                 EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::CriticalPriority)
 
 
 bool FDamageDecreasesHealthTest::RunTest(const FString& Parameters)
@@ -13,15 +13,14 @@ bool FDamageDecreasesHealthTest::RunTest(const FString& Parameters)
 	UWorld* World;
 	AActor* DummyActor;
 	USAttributeComponent* AttributeComponent = FTestsHelpers::CreateTestAttributeComponent(World, DummyActor);
-	
+
 	TestNotNull(TEXT("World should be valid"), World);
 	TestNotNull(TEXT("Dummy actor should be valid"), DummyActor);
 	TestNotNull(TEXT("Attribute component should be valid"), AttributeComponent);
 	if (!World || !DummyActor || !AttributeComponent) return false;
 
-	
-	AttributeComponent->InitHealth(100.0f); 
-	const float InitialHealth = AttributeComponent->GetHealth();
+
+	AttributeComponent->InitHealth(100.0f);
 	AttributeComponent->ApplyHealthChange(DummyActor, -50.0f);
 
 	// Check new health

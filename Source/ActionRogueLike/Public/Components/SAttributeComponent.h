@@ -4,9 +4,11 @@
 #include "Components/ActorComponent.h"
 #include "SAttributeComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnRageChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewRage, float, Delta);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnRageChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewRage, float, Delta);
+//Alternative: Share the same signature with generic names
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnAttributeChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewValue, float, Delta);
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -43,13 +45,13 @@ protected:
 
 	// UPROPERTY(ReplicatedUsing="")
 	// bool bIsRageFull;
-	
+
 	UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable once we moved the 'state' our of scharacter
 	void MulticastHealthChange(AActor* InstigatorActor, float NewHealth, float Delta);
 
 	UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable once we moved the 'state' our of scharacter
 	void MulticastRageChange(AActor* InstigatorActor, float NewRage, float Delta);
-	
+
 public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealth() const;
@@ -76,10 +78,10 @@ public:
 	bool Kill(AActor* InstigatorActor);
 
 	UPROPERTY(BlueprintAssignable, Category = "Attributes") // можно подписаться в bp
-	FOnHealthChanged OnHealthChanged;
+	FOnAttributeChanged OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "Attributes")
-	FOnRageChanged OnRageChanged;
+	FOnAttributeChanged OnRageChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(AActor* InstigatorActor, float Delta);
@@ -89,9 +91,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyRage(AActor* InstigatorActor, float Delta);
-	
-	virtual void BeginPlay() override;
 
+	virtual void BeginPlay() override;
 
 public:
 #if WITH_AUTOMATION_TESTS
