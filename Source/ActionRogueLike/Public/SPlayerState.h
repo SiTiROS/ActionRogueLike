@@ -12,6 +12,8 @@ class ACTIONROGUELIKE_API ASPlayerState : public APlayerState
 	GENERATED_BODY()
 
 public:
+	ASPlayerState();
+
 	UFUNCTION(BlueprintCallable, Category = "Credits")
 	void AddCredits(int32 Delta);
 
@@ -25,6 +27,12 @@ public:
 	FOnCreditsChanged OnCreditsChanged;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "Credits")
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing="OnRep_Credits", Category = "Credits")
 	int32 Credits;
+
+	UFUNCTION()
+	void OnRep_Credits(int32 OldCredits);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastCredits(float NewCredits, float Delta);
 };

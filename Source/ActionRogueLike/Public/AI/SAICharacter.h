@@ -58,4 +58,7 @@ protected:
 	/* Key for AI Blackboard 'TargetActor' */
 	UPROPERTY(VisibleAnywhere, Category = "Setup|AI")
 	FName TargetActorKey;
+
+	UFUNCTION(NetMulticast, Unreliable) 
+	void Multicast_ShowWidget();
 };

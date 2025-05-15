@@ -32,6 +32,12 @@ protected:
 	void HideAndCooldownPickup();
 	void SetPickupState(bool bNewIsActive);
 
+	UPROPERTY(ReplicatedUsing="OnRep_IsActive")
+	bool bIsActive;
+
+	UFUNCTION()
+	void OnRep_IsActive();
+
 public:
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 };

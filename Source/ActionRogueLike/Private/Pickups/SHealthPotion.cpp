@@ -1,5 +1,4 @@
 #include "Pickups/SHealthPotion.h"
-#include "SCharacter.h"
 #include "Components/SAttributeComponent.h"
 #include "SPlayerState.h"
 
@@ -10,19 +9,16 @@ ASHealthPotion::ASHealthPotion()
 
 void ASHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 {
-	if (ASCharacter* Character = Cast<ASCharacter>(InstigatorPawn))
-	{
-		USAttributeComponent* Health = USAttributeComponent::GetAttributes(InstigatorPawn);
+	USAttributeComponent* Health = USAttributeComponent::GetAttributes(InstigatorPawn);
 
-		if (ensure(Health) && !Health->IsFullHealth() && Health->IsAlive())
+	if (ensure(Health) && !Health->IsFullHealth() && Health->IsAlive())
+	{
+		if (ASPlayerState* PlayerState = InstigatorPawn->GetPlayerState<ASPlayerState>())
 		{
-			if (ASPlayerState* PlayerState = InstigatorPawn->GetPlayerState<ASPlayerState>())
+			if (PlayerState->RemoveCredits(CreditCost) && Health->ApplyHealthChange(this, HealthToHeal))
 			{
-				if (PlayerState->RemoveCredits(CreditCost) && Health->ApplyHealthChange(this, HealthToHeal))
-				{
-					HideAndCooldownPickup();
-					UE_LOG(LogTemp, Error, TEXT("ApplyHealthChange"));
-				}
+				HideAndCooldownPickup();
+				UE_LOG(LogTemp, Error, TEXT("ApplyHealthChange"));
 			}
 		}
 	}

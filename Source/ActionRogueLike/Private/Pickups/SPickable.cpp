@@ -1,9 +1,10 @@
 #include "Pickups/SPickable.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Net/UnrealNetwork.h"
 
 ASPickable::ASPickable()
-	: Cooldown(10.0f)
+	: Cooldown(10.0f), bIsActive(true)
 {
 	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
 	//SphereComp->SetCollisionProfileName("Pickups");
@@ -33,6 +34,19 @@ void ASPickable::HideAndCooldownPickup()
 
 void ASPickable::SetPickupState(bool bNewIsActive)
 {
-	SetActorEnableCollision(bNewIsActive);
-	RootComponent->SetVisibility(bNewIsActive, true);
+	bIsActive = bNewIsActive;
+	OnRep_IsActive();
+}
+
+void ASPickable::OnRep_IsActive()
+{
+	SetActorEnableCollision(bIsActive);
+	RootComponent->SetVisibility(bIsActive, true);
+}
+
+void ASPickable::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASPickable, bIsActive);
 }

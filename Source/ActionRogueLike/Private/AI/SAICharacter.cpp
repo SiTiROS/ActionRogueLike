@@ -46,18 +46,8 @@ void ASAICharacter::OnPawnSeen(APawn* Pawn)
 	if (GetTargetActor() != Pawn)
 	{
 		SetTargetActor(Pawn);
-
-		// Добавляем виджет ! знак
-		USWorldUserWidget* NewWidget = CreateWidget<USWorldUserWidget>(GetWorld(), SpottedWidgetClass);
-		if (NewWidget)
-		{
-			NewWidget->AttachedActor = this;
-			// Index of 10 (or anything higher than default of 0) places this on top of any other widget.
-			// May end up behind the minion health bar otherwise.
-			NewWidget->AddToViewport(10);
-		}
+		Multicast_ShowWidget();
 	}
-
 
 	//DrawDebugString(GetWorld(), Pawn->GetActorLocation(), "Player Spotted", nullptr, FColor::White, 4.0f, true);
 }
@@ -120,5 +110,15 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 			// Set lifespan
 			SetLifeSpan(10.0f);
 		}
+	}
+}
+
+void ASAICharacter::Multicast_ShowWidget_Implementation()
+{
+	USWorldUserWidget* SpottedWidget = CreateWidget<USWorldUserWidget>(GetWorld(), SpottedWidgetClass);
+	if (SpottedWidget)
+	{
+		SpottedWidget->AttachedActor = this;
+		SpottedWidget->AddToViewport(10);
 	}
 }
