@@ -20,6 +20,7 @@ public class ActionRogueLike : ModuleRules
 		PublicIncludePaths.AddRange(new string[]
 			{
 				// Path.Combine(ModuleDirectory, "Tests")
+				"ActionRogueLike/",
 				"ActionRogueLike/Tests/",
 				"ActionRogueLike/Tests/FunctionalTests",
 				"ActionRogueLike/Tests/UnitTests",

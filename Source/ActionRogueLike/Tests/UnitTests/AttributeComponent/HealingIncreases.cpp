@@ -4,7 +4,7 @@
 #include "UnitTests/TestsHelpers.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FHealIncreasesHealthTest,
-                                 "Project.Attribute.Heal.Increases",
+                                 "Project.UnitTest.Attribute.ApplyHealthChange.Increases",
                                  EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::CriticalPriority)
 
 

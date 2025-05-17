@@ -5,4 +5,10 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;UnrealTest::69A39D44-6F28-3870-A0F9-72D7894C248D::Windows,Version=v10.0.26100::Project.Attribute.Damage.Decreases&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=358cd600_002Dfa5b_002D4083_002D829e_002Db4683fc2226d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;Namespace&gt;Project.UnitTest.Attribute.ApplyHealthChange&lt;/Namespace&gt;&#xD;
+    &lt;Project Location="D:\UE5_Project\ActionRougeLike\Intermediate\ProjectFiles" Presentation="&amp;lt;Games&amp;gt;\&amp;lt;ActionRogueLike&amp;gt;" /&gt;&#xD;
+  &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

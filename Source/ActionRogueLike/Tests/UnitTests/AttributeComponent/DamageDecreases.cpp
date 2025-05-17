@@ -4,7 +4,7 @@
 #include "UnitTests/TestsHelpers.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FDamageDecreasesHealthTest,
-                                 "Project.Attribute.Damage.Decreases",
+                                 "Project.UnitTest.Attribute.ApplyHealthChange.Decreases",
                                  EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter | EAutomationTestFlags::CriticalPriority)
 
 
