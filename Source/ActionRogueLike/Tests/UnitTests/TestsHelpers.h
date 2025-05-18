@@ -22,11 +22,14 @@ public:
 
 namespace SGame
 {
-	template <typename T1, typename T2>
-	struct TestPayLoad
+	namespace Test
 	{
-		T1 TestValue;
-		T2 ExpectedValue;
-		float Tolerance = KINDA_SMALL_NUMBER;
-	};
+		template <typename T1, typename T2>
+		struct TestPayLoad
+		{
+			T1 TestValue;
+			T2 ExpectedValue;
+			float Tolerance = KINDA_SMALL_NUMBER;
+		};
+	}
 }

@@ -26,7 +26,7 @@ bool FFibonacciSimple::RunTest(const FString& Parameters)
 	//TestTrueExpr(UScienceFunctLib::Fibonacci(2) == 1);
 	//TestTrueExpr(UScienceFunctLib::Fibonacci(3) == 2);
 	
-	const TArray<SGame::TestPayLoad<int, int>> TestData
+	const TArray<SGame::Test::TestPayLoad<int, int>> TestData
 	{
 		{0, 0},
 		{1, 1},
@@ -36,7 +36,7 @@ bool FFibonacciSimple::RunTest(const FString& Parameters)
 		{5, 5}
 	};
 
-	for (const SGame::TestPayLoad Data : TestData)
+	for (const SGame::Test::TestPayLoad Data : TestData)
 	{
 		// TestTrueExpr(UScienceFunctLib::Fibonacci(Data.TestValue) == Data.ExpectedValue);
 

@@ -64,7 +64,7 @@ bool FMathMaxIntImprove::RunTest(const FString& Parameters)
 		int32 ExpectedValue;
 	};
 
-	typedef TArray<SGame::TestPayLoad<TInterval<int32>, int32>> MaxIntTestPayLoad;
+	typedef TArray<SGame::Test::TestPayLoad<TInterval<int32>, int32>> MaxIntTestPayLoad;
 
 	//const TArray<SGame::TestPayLoad<TInterval<int32>, int32>> TestData
 	const MaxIntTestPayLoad TestData
@@ -78,7 +78,7 @@ bool FMathMaxIntImprove::RunTest(const FString& Parameters)
 		{{-9, -9}, -9},
 	};
 
-	for (const SGame::TestPayLoad Data : TestData)
+	for (const SGame::Test::TestPayLoad Data : TestData)
 	{
 		TestTrueExpr(FMath::Max(Data.TestValue.Min, Data.TestValue.Max) == Data.ExpectedValue);
 
@@ -94,7 +94,7 @@ bool FMathSqrtImprove::RunTest(const FString& Parameters)
 {
 	AddInfo("Sqrt function testing");
 
-	typedef TArray<SGame::TestPayLoad<float, float>> SqrtTestPayLoad;
+	typedef TArray<SGame::Test::TestPayLoad<float, float>> SqrtTestPayLoad;
 	//clang-format off
 	const SqrtTestPayLoad TestData
 	{
@@ -104,7 +104,7 @@ bool FMathSqrtImprove::RunTest(const FString& Parameters)
 	};
 	//clang-format on
 
-	for (SGame::TestPayLoad Data : TestData)
+	for (SGame::Test::TestPayLoad Data : TestData)
 	{
 		const bool IsEqual = FMath::IsNearlyEqual(FMath::Sqrt(Data.TestValue), Data.ExpectedValue, Data.Tolerance);
 		TestTrueExpr(IsEqual);
@@ -118,7 +118,7 @@ bool FMathSin::RunTest(const FString& Parameters)
 	AddInfo("Sin func testing");
 
 	typedef float Degrees;
-	typedef TArray<SGame::TestPayLoad<Degrees, float>> SinTestPayLoad;
+	typedef TArray<SGame::Test::TestPayLoad<Degrees, float>> SinTestPayLoad;
 
 	//clang-format off
 	const SinTestPayLoad TestData
