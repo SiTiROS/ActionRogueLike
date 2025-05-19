@@ -6,6 +6,7 @@
 #include "Components/SActionComponent.h"
 #include "Components/SAttributeComponent.h"
 #include "Components/SInteractionComponent.h"
+#include "Tests/Components/SInventoryComponent.h"
 
 static TAutoConsoleVariable<bool> CVarDrawDebugRotationVisualization(TEXT("su.CharacterRotationDebugDraw"),
                                                                      false, TEXT("Enable Debug for Projectile. "), ECVF_Cheat);
@@ -30,6 +31,8 @@ ASCharacter::ASCharacter()
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>(TEXT("AttributeComp"));
 
 	ActionComp = CreateDefaultSubobject<USActionComponent>(TEXT("ActionComp"));
+
+	InventoryComp = CreateDefaultSubobject<USInventoryComponent>(TEXT("InventoryComp"));
 }
 
 void ASCharacter::PostInitializeComponents()

@@ -9,6 +9,7 @@ class USAttributeComponent;
 class USInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
+class USInventoryComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
@@ -33,6 +34,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup|Component")
 	USActionComponent* ActionComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Setup|Component")
+	USInventoryComponent* InventoryComp;
 
 	UPROPERTY(EditAnywhere, Category = "Setup|Attack|FX|Material")
 	FName TimeToHitParamName;
